@@ -6,12 +6,10 @@ from astropy.io import fits
 import os
 from copy import copy
 from matplotlib.widgets import Button, Slider, TextBox, CheckButtons
-from matplotlib.ticker import MultipleLocator
-
-# plt.style.use('interactive_badpx_mplstyle.mplstyle') # Comment this out or replace it if you prefer a different plot style
+from matplotlib.ticker import MultipleLocator, MaxNLocator
 
 @mpl.style.context('interactive_badpx_mplstyle.mplstyle')
-def fiwdil(Database, concat, badpx_subdir = 'badpx_maps', flag_color='red', zwin=18, clim_init = '0, 99.99%', cmap='gist_yarg'):
+def fiwdil(Database, concat, badpx_subdir = 'badpx_maps', flag_color='red', zwin=18, clim_init = '0, 99.99%', cmap='gist_yarg', panelsize=(9,9)):
     global badpx_output_dir
     badpx_output_dir = os.path.join(Database.output_dir, badpx_subdir+'/')
     if not os.path.isdir(badpx_output_dir):
@@ -55,7 +53,7 @@ def fiwdil(Database, concat, badpx_subdir = 'badpx_maps', flag_color='red', zwin
     global fig, ax, axzoom
     fig, (ax, axzoom) = quick_implot([immed, immed], show=False, norm_kwargs=norm_kwargs, norm=norm, clim=clim_init,
                           lims=np.array([-0.01, 0.01])*nx+extent_px[0:2], ylims=np.array([-0.01, 0.01])*ny+extent_px[2:],
-                          cmap=cmap, interpolation='None', panelsize=(9,9), sharex=False, sharey=False)
+                          cmap=cmap, interpolation='None', panelsize=panelsize, sharex=False, sharey=False)
 
     ax.set_facecolor(flag_color)
     axzoom.set_facecolor(flag_color)
@@ -189,6 +187,8 @@ def fiwdil(Database, concat, badpx_subdir = 'badpx_maps', flag_color='red', zwin
 
     ax_exp.xaxis.set_minor_locator(MultipleLocator(1))
     ax_int.xaxis.set_minor_locator(MultipleLocator(1))
+    ax_exp.xaxis.set_major_locator(MaxNLocator(integer=True))
+    ax_int.xaxis.set_major_locator(MaxNLocator(integer=True))
 
     ax_exp.tick_params(which='both', axis='x', top=False)
     ax_int.tick_params(which='both', axis='x', top=False)
