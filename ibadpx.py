@@ -41,7 +41,7 @@ def fiwdil(Database, concat, badpx_subdir = 'badpx_maps', flag_color='red', zwin
 
     extent_px = np.array([0,nx,0,ny], dtype=np.float32)-0.5
 
-    cmap = copy(mpl.cm.get_cmap(cmap))
+    cmap = copy(mpl.colormaps.get_cmap(cmap))
     cmap.set_bad(cmap(0))
 
     global norm_kwargs
